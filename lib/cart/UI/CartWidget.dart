@@ -1,6 +1,8 @@
 import 'package:dine_food/cart/bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../models/response/Details.dart';
 import '../models/response/Record.dart';
@@ -41,16 +43,20 @@ class _CartWidgetState extends State<CartWidget> {
           bloc: cartBloc,
           builder: (context, CartState state) {
             if (state is CartLoading) {
-              return Text("Loading");
+              return LoadingCart();
             }
             if (state is CartEmpty) {
-              return Text("Cart Empty");
+              return EmptyCart();
             }
             if (state is CartLoadded) {
               int total = 0;
               state.cart.details!.forEach((v) {
                 total += (v.qty! * v.menu!.price!);
               });
+              var cur = NumberFormat.currency(
+                locale: "id_ID",
+                symbol: "Rp. ",
+              );
               return WillPopScope(
                 onWillPop: () async {
                   context.read<CartBloc>().add(UpdateCartApi(cart: state.cart));
@@ -140,13 +146,16 @@ class _CartWidgetState extends State<CartWidget> {
                                           return Card(
                                             child: Container(
                                               margin: EdgeInsets.symmetric(
-                                                  horizontal: 10),
+                                                horizontal: 5,
+                                              ),
                                               child: Row(
                                                 children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 15),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                      vertical: 15,
+                                                      horizontal: 5,
+                                                    ),
                                                     child: ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -168,9 +177,6 @@ class _CartWidgetState extends State<CartWidget> {
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
                                                   ),
                                                   Container(
                                                     width:
@@ -352,20 +358,41 @@ class _CartWidgetState extends State<CartWidget> {
                       width: double.maxFinite,
                       child: Column(
                         children: [
+                          Divider(
+                            thickness: 1,
+                            color: Colors.grey,
+                          ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text("Total Harga: "),
-                              Text(total.toString())
+                              Text(cur.format(total)),
                             ],
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           ElevatedButton(
-                            onPressed: () {},
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xff2A363B),
+                              ),
+                            ),
+                            onPressed: () {
+                              context
+                                  .read<CartBloc>()
+                                  .add(OrderCart(cart: state.cart));
+                            },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: Center(
-                                child: Text("Order"),
+                                child: Text(
+                                  "Order",
+                                  style: TextStyle(
+                                    fontFamily: "Cocogoose-Regular",
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -378,6 +405,234 @@ class _CartWidgetState extends State<CartWidget> {
             }
             return Text("Error");
           },
+        ),
+      ),
+    );
+  }
+
+  Widget LoadingCart() {
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: SafeArea(
+              child: Card(
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Row(
+                            children: [
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey,
+                                highlightColor: Colors.white,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.2,
+                                    fit: BoxFit.cover,
+                                    image:
+                                        AssetImage("assets/default-user.jpg"),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey,
+                                      highlightColor: Colors.white,
+                                      child: Text(
+                                        "Store Name",
+                                        style: TextStyle(
+                                          fontFamily: "Cocogoose-Regular",
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.6,
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey,
+                                      highlightColor: Colors.white,
+                                      child: Text(
+                                        "Store Address",
+                                        style: TextStyle(
+                                          fontFamily: "Cocogoose-Thin",
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Divider(
+                          thickness: 1,
+                          color: Colors.black,
+                        ),
+                        Container(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: 2,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: 15,
+                                          horizontal: 5,
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Shimmer.fromColors(
+                                            baseColor: Colors.grey,
+                                            highlightColor: Colors.white,
+                                            child: Image(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.2,
+                                              fit: BoxFit.cover,
+                                              image: AssetImage(
+                                                  "assets/default-user.jpg"),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.54,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Shimmer.fromColors(
+                                                    baseColor: Colors.grey,
+                                                    highlightColor:
+                                                        Colors.white,
+                                                    child: Text(
+                                                      "Menu Name",
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            "Cocogoose-Regular",
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  Shimmer.fromColors(
+                                                    baseColor: Colors.grey,
+                                                    highlightColor:
+                                                        Colors.white,
+                                                    child: Text(
+                                                      "Rp. 4000",
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            "Cocogoose-Thin",
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.all(20),
+          width: double.maxFinite,
+          child: Column(
+            children: [
+              Divider(
+                thickness: 1,
+                color: Colors.grey,
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey,
+                    highlightColor: Colors.white,
+                    child: Text("Total Harga: "),
+                  ),
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey,
+                    highlightColor: Colors.white,
+                    child: Text("Rp. 1000000"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget EmptyCart() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: Icon(
+                Icons.remove_shopping_cart,
+                size: 60,
+              ),
+            ),
+            Text(
+              "Cart is empty",
+              style: TextStyle(fontFamily: "Cocogoose-Regular", fontSize: 28),
+            ),
+          ],
         ),
       ),
     );

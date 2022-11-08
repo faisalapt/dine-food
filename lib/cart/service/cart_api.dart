@@ -48,4 +48,43 @@ class ApiCart extends ApiUtils {
 
     return res;
   }
+
+  Future<CartResponse> orderCart(Record cart) async {
+    mPreferences = await SharedPreferences.getInstance();
+    final String token = mPreferences!.getString("token") ?? '';
+    var response = await dio.post(
+      "/order",
+      options: Options(
+        headers: {
+          "Authorization": "Bearer " + token,
+        },
+      ),
+      data: cart.toJson(),
+    );
+    CartResponse cartResponse;
+    if (response.statusCode == 200) {
+      var resDelete = await dio.delete(
+        "/cart/" + cart.id!,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer " + token,
+          },
+        ),
+      );
+      if (resDelete.statusCode == 200) {
+        cartResponse = CartResponse(
+          responStatus: ResponStatus.fromJson(response.data['respon_status']),
+        );
+        return cartResponse;
+      }
+      cartResponse = CartResponse(
+        responStatus: ResponStatus.fromJson(resDelete.data['respon_status']),
+      );
+      return cartResponse;
+    }
+    cartResponse = CartResponse(
+      responStatus: ResponStatus.fromJson(response.data['data']),
+    );
+    return cartResponse;
+  }
 }

@@ -24,14 +24,6 @@ class _SideMenuState extends State<SideMenu> {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.account_box_rounded,
-                    color: Colors.grey,
-                  ),
-                  title: Text("Profile"),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(
                     Icons.shopping_cart_rounded,
                     color: Colors.grey,
                   ),
@@ -46,7 +38,9 @@ class _SideMenuState extends State<SideMenu> {
                     color: Colors.grey,
                   ),
                   title: Text("Orders"),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, "/order");
+                  },
                 ),
               ],
             ),
@@ -56,7 +50,7 @@ class _SideMenuState extends State<SideMenu> {
               children: [
                 ListTile(
                   leading: Icon(
-                    Icons.supervisor_account,
+                    Icons.logout,
                     color: Colors.grey,
                   ),
                   title: Text("Log Out"),
@@ -66,7 +60,6 @@ class _SideMenuState extends State<SideMenu> {
                     mPreference!.remove("role");
                     mPreference!.remove("token");
                     mPreference!.remove("isLogin");
-                    print(mPreference!.getBool("isLogin"));
                     Navigator.pushNamedAndRemoveUntil(
                         context, "/home-page", (route) => false);
                   },

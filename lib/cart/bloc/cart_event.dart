@@ -62,3 +62,12 @@ class UpdateCartApi extends CartEvent {
   @override
   List<Object> get props => [cart];
 }
+
+class OrderCart extends CartEvent {
+  final Record cart;
+
+  const OrderCart({required this.cart});
+
+  @override
+  List<Object> get props => [cart];
+}
