@@ -29,33 +29,32 @@ class _HomePageState extends State<HomePage> {
     var utils = ApiUtils();
     utils.mPreferences = await SharedPreferences.getInstance();
 
-    var response = ApiCheckToken().checkToken();
-
-    response.whenComplete(() async {
-      await response.then((value) {
-        print(value.statusMessage);
-        if (value.statusCode == 401) {
-          utils.mPreferences!.remove("name");
-          utils.mPreferences!.remove("role");
-          utils.mPreferences!.remove("token");
-          utils.mPreferences!.remove("isLogin");
-        }
-      });
-    });
     isLogin = utils.mPreferences!.getBool('isLogin') ?? false;
     String? role = utils.mPreferences!.getString("role") ?? '';
 
     if (isLogin == false || isLogin == null) {
       Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
-    }
+    } else {
+      if (role == 'customer') {
+        var response = ApiCheckToken().checkToken();
 
-    if (role == 'partner') {
-      Navigator.pushNamedAndRemoveUntil(
-          context, "/home-partner", (route) => false);
-    }
-
-    if (role == 'customer') {
-      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+        await response.whenComplete(() async {
+          await response.then((value) {
+            if (value.statusCode == 401) {
+              utils.mPreferences!.remove("name");
+              utils.mPreferences!.remove("role");
+              utils.mPreferences!.remove("token");
+              utils.mPreferences!.remove("isLogin");
+              utils.mPreferences!.remove("id");
+              Navigator.pushNamedAndRemoveUntil(
+                  context, "/home-page", (route) => false);
+            } else if (value.statusCode == 200) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, "/home", (route) => false);
+            }
+          });
+        });
+      }
     }
   }
 

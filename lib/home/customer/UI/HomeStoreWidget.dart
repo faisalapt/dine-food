@@ -3,6 +3,7 @@ import 'package:dine_food/home/customer/models/Stores.dart';
 import 'package:dine_food/home/store/show/UI/StoreScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeStoreWidget extends StatefulWidget {
   const HomeStoreWidget({super.key});
@@ -72,7 +73,7 @@ class _HomeStoreWidgetState extends State<HomeStoreWidget> {
                 BlocBuilder<StoreBloc, StoreState>(
                   builder: (_, StoreState state) {
                     if (state is StoreLoading) {
-                      return Text("Loading");
+                      return HomeStoreLoading();
                     }
                     if (state is StoreLoaded) {
                       return HomeStoreLoaded(
@@ -85,6 +86,74 @@ class _HomeStoreWidgetState extends State<HomeStoreWidget> {
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget HomeStoreLoading() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 30,
+          ),
+          GridView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              childAspectRatio: 6 / 9,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+            ),
+            itemCount: 2,
+            itemBuilder: (BuildContext cxt, index) {
+              return Container(
+                decoration: BoxDecoration(
+                    color: Color(0xffB9D7B8),
+                    borderRadius: BorderRadius.circular(20)),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey,
+                          highlightColor: Colors.white,
+                          child: Image(
+                              width: MediaQuery.of(cxt).size.width * 0.4,
+                              fit: BoxFit.cover,
+                              image: AssetImage("assets/default-user.jpg")),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        width: MediaQuery.of(cxt).size.width,
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey,
+                          highlightColor: Colors.white,
+                          child: Text(
+                            "Store Name",
+                            style: TextStyle(
+                              fontFamily: "Cocogoose-Regular",
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -103,7 +172,7 @@ class _HomeStoreWidgetState extends State<HomeStoreWidget> {
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 200,
-              childAspectRatio: 7 / 9,
+              childAspectRatio: 6 / 9,
               crossAxisSpacing: 20,
               mainAxisSpacing: 20,
             ),

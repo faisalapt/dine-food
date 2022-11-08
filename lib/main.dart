@@ -8,6 +8,8 @@ import 'package:dine_food/home/customer/bloc/store_customer_bloc.dart';
 import 'package:dine_food/home/partner/UI/HomePartner.dart';
 import 'package:dine_food/home/store/show/bloc/show_store_bloc.dart';
 import 'package:dine_food/login/UI/login.dart';
+import 'package:dine_food/orders/UI/OrderScreen.dart';
+import 'package:dine_food/orders/bloc/order_bloc.dart';
 import 'package:dine_food/register/customer/UI/register_customer.dart';
 import 'package:dine_food/register/partner/UI/register_partner.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,8 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => ShowStoreBloc()),
         BlocProvider(create: (context) => StoreCustomerBloc()),
         BlocProvider(create: (context) => StoreBloc()),
-        BlocProvider(create: (context) => CartBloc())
+        BlocProvider(create: (context) => CartBloc()),
+        BlocProvider(create: (context) => OrderBloc())
       ],
       child: MaterialApp(
         title: 'Dine Food',
@@ -49,7 +52,8 @@ class _MyAppState extends State<MyApp> {
           "/register-partner": (context) => RegisterPartner(),
           "/home": (context) => HomeCustomerScreen(),
           "/home-partner": (context) => HomePartner(),
-          "/cart": (context) => CartScreen()
+          "/cart": (context) => CartScreen(),
+          "/order": (context) => OrderScreen()
         },
       ),
     );

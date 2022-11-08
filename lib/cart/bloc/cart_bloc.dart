@@ -66,7 +66,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         var response = ApiCart().addCart(event.cart);
         await response.whenComplete(() async {
           await response.then((value) {
-            print(event.cart.toJson());
             if (value.responStatus!.code == 200) {
               emit(CartLoadded(cart: Record()));
             }
@@ -74,6 +73,26 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           });
         });
       } catch (e) {
+        emit(CartError());
+      }
+    });
+    on<OrderCart>((event, emit) async {
+      emit(CartLoading());
+      try {
+        var response = ApiCart().orderCart(event.cart);
+        await response.whenComplete(() async {
+          await response.then((value) {
+            print(event.cart.toJson());
+            if (value.responStatus!.code == 200) {
+              emit(CartEmpty());
+            } else {
+              print(value.responStatus!.message);
+              emit(CartError());
+            }
+          });
+        });
+      } catch (e) {
+        print(e);
         emit(CartError());
       }
     });

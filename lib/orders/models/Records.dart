@@ -1,20 +1,33 @@
 import 'Details.dart';
 import 'Store.dart';
-import 'User.dart';
 
-class Record {
+class Records {
   String? id;
+  String? orderNumber;
+  int? total;
+  String? status;
   String? storeId;
+  String? date;
   Store? store;
-  User? user;
   List<Details>? details;
 
-  Record({this.id, this.storeId, this.store, this.details, this.user});
+  Records(
+      {this.id,
+      this.orderNumber,
+      this.total,
+      this.status,
+      this.storeId,
+      this.date,
+      this.store,
+      this.details});
 
-  Record.fromJson(Map<String, dynamic> json) {
+  Records.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    orderNumber = json['order_number'];
+    total = json['total'];
+    status = json['status'];
     storeId = json['store_id'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    date = json['date'];
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
     if (json['details'] != null) {
       details = <Details>[];
@@ -27,10 +40,11 @@ class Record {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['order_number'] = this.orderNumber;
+    data['total'] = this.total;
+    data['status'] = this.status;
     data['store_id'] = this.storeId;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
-    }
+    data['date'] = this.date;
     if (this.store != null) {
       data['store'] = this.store!.toJson();
     }

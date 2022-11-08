@@ -5,6 +5,7 @@ import 'package:dine_food/home/customer/models/Customer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../main.dart';
 
 class HomeCustomer extends StatefulWidget {
@@ -42,7 +43,7 @@ class _HomeCustomerState extends State<HomeCustomer> {
             child: BlocBuilder<StoreCustomerBloc, StoreCustomerState>(
               builder: (_, StoreCustomerState state) {
                 if (state is StoreCustomerLoading) {
-                  return Text("Loading");
+                  return HomeLoading();
                 }
                 if (state is StoreCustomerLoaded) {
                   return SingleChildScrollView(
@@ -51,7 +52,7 @@ class _HomeCustomerState extends State<HomeCustomer> {
                         HomeLoaded(
                           customer: state.customer,
                         ),
-                        HomeStoreWidget()
+                        HomeStoreWidget(),
                       ],
                     ),
                   );
@@ -64,6 +65,45 @@ class _HomeCustomerState extends State<HomeCustomer> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget HomeLoading() {
+    return SafeArea(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Shimmer.fromColors(
+                baseColor: Colors.grey,
+                highlightColor: Colors.white,
+                child: Text(
+                  "Hello",
+                  style: TextStyle(
+                    fontFamily: "Cocogoose-Regular",
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              Shimmer.fromColors(
+                baseColor: Colors.grey,
+                highlightColor: Colors.white,
+                child: Text(
+                  "Name",
+                  style: TextStyle(
+                    fontFamily: "Cocogoose-Regular",
+                    color: Colors.white,
+                    fontSize: 22,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
