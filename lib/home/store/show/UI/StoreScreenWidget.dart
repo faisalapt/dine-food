@@ -220,8 +220,8 @@ class _StoreScreenWidgetState extends State<StoreScreenWidget> {
     int qty = 1;
     return DraggableScrollableSheet(
       snap: true,
-      initialChildSize: 0.4,
-      maxChildSize: 0.9,
+      initialChildSize: 1,
+      maxChildSize: 1,
       minChildSize: 0.4,
       builder: (_, controller) {
         return Container(

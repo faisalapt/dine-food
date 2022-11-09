@@ -355,165 +355,171 @@ class _OrderWidgetState extends State<OrderWidget> {
           child: ListView(
             controller: controller,
             children: [
-              Card(
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.2,
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    order.store!.logo!,
-                                    scale: 0.1,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    order.store!.name!,
-                                    style: TextStyle(
-                                      fontFamily: "Cocogoose-Regular",
-                                      fontSize: 16,
+              Expanded(
+                child: Card(
+                  child: Container(
+                    margin: EdgeInsets.all(20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.2,
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      order.store!.logo!,
+                                      scale: 0.1,
                                     ),
                                   ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    child: Text(
-                                      order.store!.address! +
-                                          ", " +
-                                          order.store!.city!.name! +
-                                          ", " +
-                                          order.store!.postalCode!,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      order.store!.name!,
                                       style: TextStyle(
-                                        fontFamily: "Cocogoose-Thin",
+                                        fontFamily: "Cocogoose-Regular",
                                         fontSize: 16,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )
-                            ],
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.6,
+                                      child: Text(
+                                        order.store!.address! +
+                                            ", " +
+                                            order.store!.city!.name! +
+                                            ", " +
+                                            order.store!.postalCode!,
+                                        style: TextStyle(
+                                          fontFamily: "Cocogoose-Thin",
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Divider(
-                          thickness: 1,
-                          color: Colors.black,
-                        ),
-                        SingleChildScrollView(
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(maxHeight: 400),
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: order.details!.length,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 15,
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            child: Image(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.2,
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                order.details![index].menu!
-                                                    .image!,
-                                                scale: 0.1,
+                          Divider(
+                            thickness: 1,
+                            color: Colors.black,
+                          ),
+                          SingleChildScrollView(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(maxHeight: 400),
+                              child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: order.details!.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 7),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 15,
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              child: Image(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.2,
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  order.details![index].menu!
+                                                      .image!,
+                                                  scale: 0.1,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.54,
-                                          child: Container(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      order.details![index]
-                                                          .menu!.name!,
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "Cocogoose-Regular",
-                                                        fontSize: 14,
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.54,
+                                            child: Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        order.details![index]
+                                                            .menu!.name!,
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "Cocogoose-Regular",
+                                                          fontSize: 14,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 8,
-                                                    ),
-                                                    Text(
-                                                      "Rp. " +
-                                                          order.details![index]
-                                                              .menu!.price!
-                                                              .toString(),
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "Cocogoose-Thin",
-                                                        fontSize: 14,
+                                                      SizedBox(
+                                                        height: 8,
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Text(
-                                                  "Qty: " +
-                                                      order.details![index].qty
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                    fontFamily:
-                                                        "Cocogoose-Thin",
+                                                      Text(
+                                                        "Rp. " +
+                                                            order
+                                                                .details![index]
+                                                                .menu!
+                                                                .price!
+                                                                .toString(),
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "Cocogoose-Thin",
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                              ],
+                                                  Text(
+                                                    "Qty: " +
+                                                        order
+                                                            .details![index].qty
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          "Cocogoose-Thin",
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
